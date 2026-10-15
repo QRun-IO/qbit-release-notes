@@ -30,7 +30,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 - Internal fields (source refs, titles, commit, source log, component versions) never leave the admin tables or appear in the UI API.
 - Nothing an automated drafter wrote is published unless settings say AUTO_PUBLISH; the sanitizer gates every publish.
 - No secrets in metadata: GitHub tokens are read from the environment at call time.
-- No foreign keys; DB changes only in the Liquibase changelog.
+- DB changes only in the Liquibase changelog; the only foreign key is item -> release.
 
 ## Naming (owner rule)
 

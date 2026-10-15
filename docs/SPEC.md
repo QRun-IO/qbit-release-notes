@@ -43,8 +43,8 @@ notifications, not alerts.
   `Website-Backend#262`), source title. Internal fields never leave the admin tables.
 - `release_notes_user_state`: user id, last seen at. Drives the per-user "new" indicator.
 
-No foreign keys (QQQ joins only). All DDL in the qbit's Liquibase changelog, runnable by the
-application database user.
+Items reference their release with a foreign key (`ON DELETE CASCADE`); no other table is
+referenced. All DDL is in the qbit's Liquibase changelog, runnable by the application database user.
 
 ## Detection
 

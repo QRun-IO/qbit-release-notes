@@ -5,7 +5,7 @@ All notable changes are documented here. This project follows Keep a Changelog a
 ## [Unreleased]
 
 ### Added
-- Release records, items, settings and per-user read state as standard QQQ tables (`release_notes_*`) with a Liquibase changelog (no foreign keys) and seeded settings (require approval, all users, notify).
+- Release records, items, settings and per-user read state as standard QQQ tables (`release_notes_*`) with a Liquibase changelog (item-to-release foreign key) and seeded settings (require approval, all users, notify).
 - Once-per-version detection across pods and restarts (unique app + version), started by the host after startup.
 - `ReleaseSource` SPI with `GitHubReleaseSource` (TAG and WINDOW modes; token read from the environment at call time) and `ComponentVersionsSource`.
 - `ReleaseNotesDrafter` SPI with the deterministic `RuleBasedDrafter` and `ReleaseNotesSanitizer` (no internal references, personal data or secrets in published text).

@@ -121,7 +121,7 @@ class ReleaseNotesMetaDataTest
          }
       }
       String script = new String(getClass().getClassLoader().getResourceAsStream(ReleaseNotesMetaData.CHANGELOG).readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
-      assertThat(script).doesNotContainIgnoringCase("FOREIGN KEY (").doesNotContainIgnoringCase(" REFERENCES ");
+      assertThat(script).contains("CONSTRAINT fk_release_notes_item_release_id FOREIGN KEY (release_id) REFERENCES release_notes_release (id)");
    }
 
 

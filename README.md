@@ -26,7 +26,8 @@ for users who opted in, by email) and adds the release to a "What's new" page. D
 ```
 
 Include `db/liquibase/qbit-release-notes/release_notes.changelog.sql` once in the host's Liquibase
-changelog. It creates the four tables (no foreign keys) and seeds the settings row.
+changelog. It creates the four tables (items reference their release by foreign key) and seeds the
+settings row.
 
 ```java
 ReleaseNotesQBitConfig config = new ReleaseNotesQBitConfig()
