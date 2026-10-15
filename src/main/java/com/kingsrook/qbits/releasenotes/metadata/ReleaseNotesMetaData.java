@@ -132,7 +132,7 @@ public final class ReleaseNotesMetaData
       item.withSection(new QFieldSection("system", new QIcon("history"), Tier.T3, List.of("createDate", "modifyDate")));
       instance.addTable(item);
 
-      QTableMetaData settings = base(config, ReleaseNotesSettings.TABLE_NAME, "Release Notes Settings", "settings", ReleaseNotesSettings.class);
+      QTableMetaData settings = base(config, ReleaseNotesSettings.TABLE_NAME, "Settings", "settings", ReleaseNotesSettings.class);
       settings.withRecordLabelFormat("%s").withRecordLabelFields("publishMode");
       settings.getField("publishMode").setPossibleValueSourceName(ReleaseNotesPossibleValues.PUBLISH_MODE);
       settings.getField("audienceType").setPossibleValueSourceName(ReleaseNotesPossibleValues.AUDIENCE_TYPE);
