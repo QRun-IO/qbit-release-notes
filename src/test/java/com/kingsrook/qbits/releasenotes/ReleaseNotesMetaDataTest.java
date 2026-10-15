@@ -78,7 +78,10 @@ class ReleaseNotesMetaDataTest
       assertThat(instance.getProcess(ReleaseNotesProcesses.PUBLISH).getPermissionRules().getPermissionBaseName()).isEqualTo("release_notes.publish");
       assertThat(instance.getQBits()).isNotEmpty();
       assertThat(ReleaseNotesRuntime.of(instance).componentVersions()).containsEntry("qbit-release-notes", ReleaseNotesQBitProducer.VERSION);
-      assertThat(ReleaseNotesRuntime.of(instance).withComponentVersion("ui", "1.0").componentVersions()).containsEntry("ui", "1.0");
+      assertThat(ReleaseNotesRuntime.of(instance).withComponentVersion("ui", "1.0").componentVersions()).containsEntry("ui", "1.0").containsKey("qqq");
+      assertThat(ReleaseNotesRuntime.mavenVersion("com.kingsrook.qqq", "qqq-backend-core")).isNotBlank();
+      assertThat(ReleaseNotesRuntime.mavenVersion("x", "nope")).isNull();
+      assertThat(ReleaseNotesRuntime.mavenVersion(null, "nope")).isNull();
       assertThat(new ReleaseNotesQBitConfig().withPermissionBaseName("rn").getAdminPermissionNames()).containsExactly("rn.manage", "rn.publish");
 
       ReleaseNotesQBitConfig bad = new ReleaseNotesQBitConfig().withBackendName("nope");

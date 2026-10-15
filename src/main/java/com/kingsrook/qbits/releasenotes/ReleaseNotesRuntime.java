@@ -22,9 +22,12 @@
 package com.kingsrook.qbits.releasenotes;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import com.kingsrook.qbits.releasenotes.drafting.ReleaseNotesDrafter;
@@ -175,18 +178,58 @@ public class ReleaseNotesRuntime implements QSupplementalInstanceMetaData
    public Map<String, String> componentVersions()
    {
       Map<String, String> versions = new TreeMap<>();
+      String              qqq      = mavenVersion("com.kingsrook.qqq", "qqq-backend-core");
+      if(qqq != null)
+      {
+         versions.put("qqq", qqq);
+      }
       if(instance.getQBits() != null)
       {
          for(QBitMetaData qbit : instance.getQBits().values())
          {
-            if(qbit.getArtifactId() != null && qbit.getVersion() != null)
+            if(qbit.getArtifactId() != null)
             {
-               versions.put(qbit.getArtifactId(), qbit.getVersion());
+               String built   = mavenVersion(qbit.getGroupId(), qbit.getArtifactId());
+               String version = built != null ? built : qbit.getVersion();
+               if(version != null)
+               {
+                  versions.put(qbit.getArtifactId(), version);
+               }
             }
          }
       }
       versions.putAll(extraComponents);
       return (versions);
+   }
+
+
+
+   /*******************************************************************************
+    ** The version Maven recorded in a jar on the classpath
+    ** (META-INF/maven/group/artifact/pom.properties), or null.
+    *******************************************************************************/
+   public static String mavenVersion(String groupId, String artifactId)
+   {
+      if(groupId == null || artifactId == null)
+      {
+         return (null);
+      }
+      String resource = "META-INF/maven/" + groupId + "/" + artifactId + "/pom.properties";
+      try(InputStream stream = ReleaseNotesRuntime.class.getClassLoader().getResourceAsStream(resource))
+      {
+         if(stream == null)
+         {
+            return (null);
+         }
+         Properties properties = new Properties();
+         properties.load(stream);
+         String version = properties.getProperty("version");
+         return (version == null || version.isBlank() ? null : version.trim());
+      }
+      catch(IOException e)
+      {
+         return (null);
+      }
    }
 
 
