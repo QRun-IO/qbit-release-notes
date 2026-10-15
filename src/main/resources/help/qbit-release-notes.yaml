@@ -1,0 +1,116 @@
+bundle: qbit-release-notes
+version: ${project.version}
+layer: QBIT
+entries:
+- key: app:releaseNotes;slot:help
+  summary: "Customer-facing release notes: review each release's draft, publish it, and everyone is told what's new."
+  content: |
+    Each new version of the application is recorded once as a draft in Releases, with items drafted from merged pull requests and platform updates. Edit the title, summary and items, then run Publish on the release. Publishing shows it on What's new and sends one notification to its audience; users who muted Release notifications are not notified, and email goes only to users who opted in. Settings controls approval, audience and drafting.
+- key: table:release_notes_item;slot:help
+  summary: "One line of a release note, grouped by category on What's new."
+- key: table:release_notes_item;slot:emptyState
+  summary: "One line of a release note, grouped by category on What's new."
+  content: |
+    Items are drafted when a release is recorded. Add your own with New, or run Redraft on the release.
+- key: table:release_notes_item;field:releaseId
+  summary: "Release this item belongs to."
+- key: table:release_notes_item;field:category
+  summary: "New, Improved, Fixed, Security or Removed."
+- key: table:release_notes_item;field:text
+  summary: "Customer-facing text: one plain sentence, no ticket numbers or internal names."
+- key: table:release_notes_item;field:linkUrl
+  summary: "Optional app path or https link for more detail."
+- key: table:release_notes_item;field:screenshotUrl
+  summary: "Optional screenshot URL, for example from object storage."
+- key: table:release_notes_item;field:sortOrder
+  summary: "Order within its category (lower first)."
+- key: table:release_notes_item;field:included
+  summary: "Only included items are published. Drafts exclude internal work."
+- key: table:release_notes_item;field:sourceType
+  summary: "Where the item came from: pull request, release line, platform or by hand."
+- key: table:release_notes_item;field:sourceRef
+  summary: "Internal reference such as a repository and pull request number. Never published."
+- key: table:release_notes_item;field:sourceTitle
+  summary: "Original title the item was drafted from. Never published."
+- key: table:release_notes_release;slot:help
+  summary: "One row per application version: its customer note and where the draft came from."
+- key: table:release_notes_release;slot:emptyState
+  summary: "One row per application version: its customer note and where the draft came from."
+  content: |
+    Releases appear here when a new version starts for the first time. If none appear, the host has not reported a release version yet; run Check for new release.
+- key: table:release_notes_release;field:appName
+  summary: "Application this release belongs to."
+- key: table:release_notes_release;field:version
+  summary: "Released version, for example 0.1.112."
+- key: table:release_notes_release;field:commitSha
+  summary: "Commit the release was built from (internal)."
+- key: table:release_notes_release;field:previousVersion
+  summary: "Version recorded before this one; changes are gathered from there."
+- key: table:release_notes_release;field:detectedAt
+  summary: "When this version was first seen running."
+- key: table:release_notes_release;field:status
+  summary: "Draft until published or skipped. Only published releases are shown to users."
+- key: table:release_notes_release;field:title
+  summary: "Customer-facing title shown on What's new and in the notification."
+- key: table:release_notes_release;field:summary
+  summary: "One or two customer-facing sentences shown under the title."
+- key: table:release_notes_release;field:audienceType
+  summary: "Who sees this release: all users, or users with a permission."
+- key: table:release_notes_release;field:audienceValue
+  summary: "The permission users need when the audience is a permission."
+- key: table:release_notes_release;field:publishedAt
+  summary: "When the release was published."
+- key: table:release_notes_release;field:publishedBy
+  summary: "Who published or skipped the release."
+- key: table:release_notes_release;field:notifiedAt
+  summary: "When the notification was sent."
+- key: table:release_notes_release;field:draftedBy
+  summary: "How the items were drafted (RULES: from pull request titles and labels)."
+- key: table:release_notes_release;field:componentVersions
+  summary: "Platform component versions at this release (internal)."
+- key: table:release_notes_release;field:sourceLog
+  summary: "What each source contributed and any problems (internal)."
+- key: table:release_notes_settings;slot:help
+  summary: "How releases are drafted, approved and announced."
+- key: table:release_notes_settings;slot:emptyState
+  summary: "How releases are drafted, approved and announced."
+  content: |
+    Settings are created with the qbit. If this is empty, the defaults apply: require approval, all users, notify.
+- key: table:release_notes_settings;field:publishMode
+  summary: "Require approval (default) or publish drafts automatically."
+- key: table:release_notes_settings;field:audienceType
+  summary: "Default audience for new releases."
+- key: table:release_notes_settings;field:audienceValue
+  summary: "Default permission when the audience is a permission."
+- key: table:release_notes_settings;field:notifyOnPublish
+  summary: "Send a notification when a release is published."
+- key: table:release_notes_settings;field:draftingEnabled
+  summary: "Draft items from sources. When off, items are recorded but excluded."
+- key: table:release_notes_settings;field:includePlatformUpdates
+  summary: "Add one Platform and reliability improvements item when components changed."
+- key: table:release_notes_settings;field:ingestGithub
+  summary: "Read GitHub releases and pull requests for new releases."
+- key: table:release_notes_settings;field:titleTemplate
+  summary: "Title for new releases; {app} and {version} are replaced."
+- key: table:release_notes_settings;field:styleGuide
+  summary: "House style for writing items, for editors and future drafters."
+- key: table:release_notes_user_state;slot:help
+  summary: "When each user last opened What's new; newer releases show as new."
+- key: table:release_notes_user_state;slot:emptyState
+  summary: "When each user last opened What's new; newer releases show as new."
+  content: |
+    Rows appear when users open What's new. Delete a row to show every release as new to that user again.
+- key: table:release_notes_user_state;field:userId
+  summary: "The user."
+- key: table:release_notes_user_state;field:lastSeenAt
+  summary: "When the user last opened What's new."
+- key: process:releaseNotesCheckForRelease;slot:help
+  summary: "Record the running version now if it has no release yet."
+- key: process:releaseNotesPublish;slot:help
+  summary: "Publish the selected drafts to What's new and notify their audience."
+  content: |
+    Review lists what blocks publishing: a missing title, no included items, or text with internal references such as pull request numbers.
+- key: process:releaseNotesRedraft;slot:help
+  summary: "Read the sources again and replace drafted items; items you wrote are kept."
+- key: process:releaseNotesSkip;slot:help
+  summary: "Skip the selected drafts so they are never announced or listed."
