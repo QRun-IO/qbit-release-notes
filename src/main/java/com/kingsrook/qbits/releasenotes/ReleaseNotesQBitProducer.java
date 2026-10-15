@@ -34,6 +34,7 @@ import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
 import com.kingsrook.qqq.backend.core.model.metadata.qbits.QBitConfigValidationException;
 import com.kingsrook.qqq.backend.core.model.metadata.qbits.QBitMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.qbits.QBitMetaDataProducer;
+import com.kingsrook.qqq.backend.core.model.metadata.qbits.SourceQBitAware;
 
 
 /*******************************************************************************
@@ -145,7 +146,33 @@ public class ReleaseNotesQBitProducer implements QBitMetaDataProducer<ReleaseNot
       new ReleaseNotesRuntime(instance, qBitConfig).addSelfToInstance(instance);
       registerUiApi(instance);
       ReleaseNotesHelp.register(instance, qBitConfig);
+      markSource(instance);
       return (new MetaDataProducerMultiOutput());
+   }
+
+
+
+   /*******************************************************************************
+    ** Tag everything this qbit registered with its source qbit name, so hosts
+    ** can tell qbit-owned metadata from their own (backup roles, nav checks).
+    *******************************************************************************/
+   private void markSource(QInstance instance)
+   {
+      String source = getQBitMetaData().getName();
+      List<Object> owned = new ArrayList<>();
+      ReleaseNotesMetaData.TABLES.forEach(name -> owned.add(instance.getTable(name)));
+      ReleaseNotesProcesses.ALL.forEach(name -> owned.add(instance.getProcess(name)));
+      owned.add(instance.getApp(qBitConfig.getAppName()));
+      instance.getPossibleValueSources().values().stream().filter(pvs -> pvs.getName().startsWith(ReleaseNotesQBitConfig.TABLE_NAME_PREFIX)).forEach(pvs -> owned.add(pvs));
+      owned.add(instance.getJoin(ReleaseNotesMetaData.ITEMS_JOIN));
+      owned.add(instance.getWidget(ReleaseNotesMetaData.ITEMS_JOIN));
+      for(Object item : owned)
+      {
+         if(item instanceof SourceQBitAware aware && aware.getSourceQBitName() == null)
+         {
+            aware.setSourceQBitName(source);
+         }
+      }
    }
 
 

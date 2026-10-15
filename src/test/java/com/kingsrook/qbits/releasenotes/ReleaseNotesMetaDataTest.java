@@ -71,6 +71,8 @@ class ReleaseNotesMetaDataTest
       }
       assertThat(instance.getTable("release_notes_item").getField("text").getBackendName()).isEqualTo("item_text");
       assertThat(instance.getApp("releaseNotes").getLabel()).isEqualTo("Release Notes");
+      assertThat(instance.getTable("release_notes_release").getSourceQBitName()).isEqualTo("com.kingsrook.qbits:qbit-release-notes");
+      assertThat(instance.getProcess(ReleaseNotesProcesses.PUBLISH).getSourceQBitName()).isEqualTo("com.kingsrook.qbits:qbit-release-notes");
       for(String process : ReleaseNotesProcesses.ALL)
       {
          assertThat(instance.getProcess(process).getTableName()).isEqualTo("release_notes_release");

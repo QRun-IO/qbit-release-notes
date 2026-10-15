@@ -114,3 +114,5 @@ entries:
   summary: "Read the sources again and replace drafted items; items you wrote are kept."
 - key: process:releaseNotesSkip;slot:help
   summary: "Skip the selected drafts so they are never announced or listed."
+- key: widget:release_notes_release_release_notes_item;slot:label
+  summary: "Items"

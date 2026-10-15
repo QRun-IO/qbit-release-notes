@@ -72,7 +72,7 @@ public final class ReleaseNotesProcesses
     *******************************************************************************/
    public static void addTo(QInstance instance, ReleaseNotesQBitConfig config)
    {
-      instance.addProcess(recordAction(PUBLISH, "Publish", "campaign", ReleaseActionSteps.PUBLISH, config.getPublishPermissionName(),
+      instance.addProcess(recordAction(PUBLISH, "Publish", "send", ReleaseActionSteps.PUBLISH, config.getPublishPermissionName(),
          "Review the selected drafts. Publishing shows them on What's new and notifies their audience."));
       instance.addProcess(recordAction(SKIP, "Skip", "do_not_disturb_on", ReleaseActionSteps.SKIP, config.getPublishPermissionName(),
          "Review the selected drafts. Skipped releases are never announced or listed."));

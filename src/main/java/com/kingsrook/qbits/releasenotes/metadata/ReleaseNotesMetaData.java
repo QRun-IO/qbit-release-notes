@@ -112,7 +112,7 @@ public final class ReleaseNotesMetaData
       release.withSection(new QFieldSection("system", new QIcon("history"), Tier.T3, List.of("createDate", "modifyDate")));
       instance.addTable(release);
 
-      QTableMetaData item = base(config, ReleaseNotesItem.TABLE_NAME, "Release Items", "list", ReleaseNotesItem.class);
+      QTableMetaData item = base(config, ReleaseNotesItem.TABLE_NAME, "Release Items", "playlist_add_check", ReleaseNotesItem.class);
       item.withRecordLabelFormat("%s").withRecordLabelFields("text");
       item.getField("releaseId").setPossibleValueSourceName(ReleaseNotesRelease.TABLE_NAME);
       item.getField("category").setPossibleValueSourceName(ReleaseNotesPossibleValues.CATEGORY);
@@ -132,7 +132,7 @@ public final class ReleaseNotesMetaData
       item.withSection(new QFieldSection("system", new QIcon("history"), Tier.T3, List.of("createDate", "modifyDate")));
       instance.addTable(item);
 
-      QTableMetaData settings = base(config, ReleaseNotesSettings.TABLE_NAME, "Settings", "settings", ReleaseNotesSettings.class);
+      QTableMetaData settings = base(config, ReleaseNotesSettings.TABLE_NAME, "Settings", "edit_notifications", ReleaseNotesSettings.class);
       settings.withRecordLabelFormat("%s").withRecordLabelFields("publishMode");
       settings.getField("publishMode").setPossibleValueSourceName(ReleaseNotesPossibleValues.PUBLISH_MODE);
       settings.getField("audienceType").setPossibleValueSourceName(ReleaseNotesPossibleValues.AUDIENCE_TYPE);
@@ -143,7 +143,7 @@ public final class ReleaseNotesMetaData
       settings.withSection(new QFieldSection("system", new QIcon("history"), Tier.T3, List.of("createDate", "modifyDate")));
       instance.addTable(settings);
 
-      QTableMetaData state = base(config, ReleaseNotesUserState.TABLE_NAME, "Release Read State", "visibility", ReleaseNotesUserState.class);
+      QTableMetaData state = base(config, ReleaseNotesUserState.TABLE_NAME, "Release Read State", "history_toggle_off", ReleaseNotesUserState.class);
       state.withRecordLabelFormat("%s").withRecordLabelFields("userId");
       state.withUniqueKey(new UniqueKey("userId"));
       state.withoutCapabilities(Capability.TABLE_INSERT, Capability.TABLE_UPDATE);
@@ -161,9 +161,9 @@ public final class ReleaseNotesMetaData
          .withPermissionRules(rules(config)));
       release.getSections().add(1, new QFieldSection("items", "Items", new QIcon("list"), Tier.T2, null).withWidgetName(ITEMS_JOIN));
 
-      QAppMetaData app = new QAppMetaData().withName(config.getAppName()).withLabel("Release Notes").withIcon(new QIcon("new_releases"))
+      QAppMetaData app = new QAppMetaData().withName(config.getAppName()).withLabel("Release Notes").withIcon(new QIcon("campaign"))
          .withPermissionRules(rules(config))
-         .withSection(new QAppSection().withName("releaseNotes").withLabel("Release Notes").withIcon(new QIcon("new_releases"))
+         .withSection(new QAppSection().withName("releaseNotes").withLabel("Release Notes").withIcon(new QIcon("campaign"))
             .withTables(new ArrayList<>(TABLES)));
       instance.addApp(app);
       if(config.getParentAppName() != null)
