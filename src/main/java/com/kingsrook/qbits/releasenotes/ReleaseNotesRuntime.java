@@ -38,7 +38,9 @@ import com.kingsrook.qqq.backend.core.logging.QLogger;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
 import com.kingsrook.qqq.backend.core.model.metadata.QSupplementalInstanceMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.qbits.QBitMetaData;
+import com.kingsrook.qqq.backend.core.model.session.QSession;
 import com.kingsrook.qqq.backend.core.model.session.QSystemUserSession;
+import com.kingsrook.qqq.backend.core.serviceidentity.ServiceIdentities;
 import static com.kingsrook.qqq.backend.core.logging.LogUtils.logPair;
 
 
@@ -160,12 +162,18 @@ public class ReleaseNotesRuntime implements QSupplementalInstanceMetaData
 
 
    /*******************************************************************************
-    ** Run as the system user.
+    ** Run qbit work with no signed-in user: as the release-notes service
+    ** principal when the host declares it (QQQ service identities; an
+    ** unavailable principal fails, never falling back), else as the system user
+    ** (previous behavior).
     *******************************************************************************/
    public <T> T asSystem(Work<T> work) throws Exception
    {
-      AtomicReference<T> result = new AtomicReference<>();
-      QContext.withTemporaryContext(new CapturedContext(instance, new QSystemUserSession(instance)), () -> result.set(work.run()));
+      AtomicReference<T> result    = new AtomicReference<>();
+      String             principal = config.getServicePrincipal();
+      QSession           session   = principal != null && ServiceIdentities.isDeclared(instance, principal)
+         ? ServiceIdentities.session(instance, principal) : new QSystemUserSession(instance);
+      QContext.withTemporaryContext(new CapturedContext(instance, session), () -> result.set(work.run()));
       return (result.get());
    }
 
