@@ -45,6 +45,8 @@ import com.kingsrook.qqq.backend.core.model.actions.tables.query.QQueryFilter;
 import com.kingsrook.qqq.backend.core.model.data.QRecord;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
 import com.kingsrook.qqq.backend.core.model.session.QSystemUserSession;
+import com.kingsrook.qqq.backend.core.serviceidentity.QServicePrincipalMetaData;
+import com.kingsrook.qqq.backend.core.serviceidentity.ServiceIdentitiesMetaData;
 import org.junit.jupiter.api.Test;
 import static com.kingsrook.qbits.releasenotes.ReleaseNotesTestSupport.NOTIFICATIONS;
 import static com.kingsrook.qbits.releasenotes.ReleaseNotesTestSupport.pr;
@@ -93,6 +95,24 @@ class ReleaseLifecycleTest
       ReleaseNotesRuntime dev = ReleaseNotesRuntime.of(ReleaseNotesTestSupport.instance("1.2.4-SNAPSHOT", CHANGES));
       assertThat(dev.service().detect()).isNull();
       assertThat(ReleaseNotesDb.query(ReleaseNotesRelease.TABLE_NAME, new QQueryFilter())).isEmpty();
+   }
+
+
+
+   /*******************************************************************************
+    ** With the release-notes principal declared, qbit work runs as it, never
+    ** as the system user.
+    *******************************************************************************/
+   @Test
+   void detectsAsTheDeclaredPrincipal() throws Exception
+   {
+      QInstance           instance = ReleaseNotesTestSupport.instance("1.2.3", CHANGES);
+      ReleaseNotesRuntime runtime  = ReleaseNotesTestSupport.runtime(instance, "2026-10-15T12:00:00Z");
+      ServiceIdentitiesMetaData.declare(instance, new QServicePrincipalMetaData().withName("release-notes"));
+      String[] ranAs = new String[1];
+      runtime.asSystem(() -> ranAs[0] = QContext.getQSession().getUser().getIdReference());
+      assertThat(ranAs[0]).isEqualTo("service:release-notes");
+      assertThat(runtime.service().detect()).isNotNull();
    }
 
 

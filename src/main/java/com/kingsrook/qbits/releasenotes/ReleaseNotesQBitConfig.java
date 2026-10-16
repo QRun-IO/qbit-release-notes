@@ -42,6 +42,7 @@ public class ReleaseNotesQBitConfig implements QBitConfig
    private static final Pattern RELEASE_VERSION = Pattern.compile("^\\d+\\.\\d+\\.\\d+$");
 
    private String backendName;
+   private String servicePrincipal = "release-notes";
    private String appName = "releaseNotes";
    private String parentAppName;
    private String permissionBaseName = "release_notes";
@@ -483,6 +484,28 @@ public class ReleaseNotesQBitConfig implements QBitConfig
    public ReleaseNotesQBitConfig withSources(List<ReleaseSource> sources)
    {
       this.sources = sources;
+      return (this);
+   }
+
+
+   /*******************************************************************************
+    ** Getter for servicePrincipal: when the host declares this QQQ service
+    ** principal, release detection, drafting and publishing run as it (its
+    ** granted permissions, audited as service:{name}) instead of the system user.
+    *******************************************************************************/
+   public String getServicePrincipal()
+   {
+      return (this.servicePrincipal);
+   }
+
+
+
+   /*******************************************************************************
+    ** Fluent setter for servicePrincipal (default release-notes).
+    *******************************************************************************/
+   public ReleaseNotesQBitConfig withServicePrincipal(String servicePrincipal)
+   {
+      this.servicePrincipal = servicePrincipal;
       return (this);
    }
 }

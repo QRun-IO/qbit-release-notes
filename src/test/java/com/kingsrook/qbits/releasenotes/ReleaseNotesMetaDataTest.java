@@ -166,7 +166,10 @@ class ReleaseNotesMetaDataTest
       assertThat(UiApiContract.check(generated, Files.readString(path), null, 1, "mvnw -Dtest=ReleaseNotesMetaDataTest -Dreleasenotes.openapi.update=true test")).isEmpty();
       var model = version.generateExtensionOpenAPIModel("qqq", extension);
       assertThat(model.getPaths().keySet()).containsExactlyInAnyOrder("/qqq/v1/qbit/release-notes/releases", "/qqq/v1/qbit/release-notes/summary", "/qqq/v1/qbit/release-notes/seen");
-      assertThat(model.getComponents().getSchemas().keySet()).allMatch(name -> name.startsWith("ReleaseNotes") && name.endsWith("V1"));
+      ///////////////////////////////////////////////////////////////////////
+      // QQQ UI API 1.6.0 adds the shared error schema to every extension. //
+      ///////////////////////////////////////////////////////////////////////
+      assertThat(model.getComponents().getSchemas().keySet()).allMatch(name -> name.equals("BasicErrorResponseV1") || (name.startsWith("ReleaseNotes") && name.endsWith("V1")));
       assertThat(generated).doesNotContain("sourceRef", "sourceLog", "commitSha", "componentVersions");
       QInstance instance = ReleaseNotesTestSupport.instance("1.0.0", List.of());
       assertThat(MiddlewareSpecExtensionsMetaData.of(instance).getExtensions()).containsOnlyKeys("release-notes");

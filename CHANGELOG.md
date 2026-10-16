@@ -5,6 +5,7 @@ All notable changes are documented here. This project follows Keep a Changelog a
 ## [Unreleased]
 
 ### Added
+- When the host declares the QQQ `release-notes` service principal (`ReleaseNotesQBitConfig.withServicePrincipal`), detection, drafting and publishing run as that principal instead of the system user. It uses its granted permissions, is audited as `service:release-notes`, and fails closed if unavailable. With no principal declared, behavior is unchanged. Needs the QQQ release with service identities (qqq#1255).
 - Release records, items, settings and per-user read state as standard QQQ tables (`release_notes_*`) with a Liquibase changelog (item-to-release foreign key) and seeded settings (require approval, all users, notify).
 - Once-per-version detection across pods and restarts (unique app + version), started by the host after startup.
 - `ReleaseSource` SPI with `GitHubReleaseSource` (TAG and WINDOW modes; token read from the environment at call time) and `ComponentVersionsSource`.
